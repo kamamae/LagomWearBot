@@ -1,0 +1,46 @@
+.searchBarContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .searchInputContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 100px;
+  }
+  
+  .searchInput {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 400px;
+    height: 30px
+  }
+  
+  .filterButton {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 5px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 20%;
+    cursor: pointer;
+    font-size: 1px; /* Размер иконки */
+  }
+  
+  .filterButton svg {
+    transform: scale(0.1); /* Уменьшение размера иконки */
+  }
+  
+  .searchButton {
+    padding: 5px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  
