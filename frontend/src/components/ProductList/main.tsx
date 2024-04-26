@@ -1,44 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import ProductItem from '../ProductItem/main';
-import { useTelegram } from '../../hooks/useTelegram';
+import './styles.css';
 
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-}
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
 
-const products: Product[] = [
-  { id: '1', title: 'Лонгсливы', price: 5000, description: 'blue' },
-  { id: '2', title: 'Лонгсливы', price: 5000, description: 'white' }
-];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/products');
+        setProducts(response.data);
 
-const ProductList: React.FC = () => {
-  const { tg } = useTelegram();
-  const [addedItems, setAddedItems] = useState<Product[]>([]);
+        console.log(response.data)
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
 
-  const onAdd = (product: Product) => {
-    const alreadyAdded = addedItems.find(item => item.id === product.id);
-    let newItems: Product[] = [];
-
-    if (alreadyAdded) {
-      newItems = addedItems.filter(item => item.id !== product.id);
-    } else {
-      newItems = [...addedItems, product];
-    }
-    setAddedItems(newItems);
-  };
+    fetchProducts();
+  }, []);
 
   return (
     <div className="list">
-      {products.map(item => (
-        <ProductItem
-          key={item.id}
-          product={item}
-          onAdd={onAdd}
-          className="item"
-        />
+      {products.map((item) => (
+        <ProductItem key={item.id} product={item} className="item" />
       ))}
     </div>
   );

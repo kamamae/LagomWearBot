@@ -4,37 +4,16 @@ import './styles.css';
 
 
 
-// const ProductItem = ({product, className, onAdd}) => {
-
-//     const onAddHandler = () => {
-//     onAdd(product);
-//     }
-
-//     return(
-//         <div className={'product' + className}>
-//             <div className = {'img'}/>
-//             <div className={'title'}>{product.title}</div>
-//             <div className={'description'}>{product.description}</div>
-//             <div className={'price'}>{product.price}</div>
-//             <Button className={'add_btn'} onClick={onAddHandler}>Добавить в коризину</Button>
-//         </div>
-//     )
-// }
-
-// export default ProductItem;
-
-
-
 const ProductCard = ({ product }) => {
-  const { name, price, description, image } = product;
-
+  const { name, price, image } = product;
+const firstImage = 'http://127.0.0.1:8000/media/'+product.images[0].image
+console.log(firstImage);
   return (
     <div className="product-card">
-      <img src={image} alt={name} className="product-image" />
+      <img src={firstImage} alt='foto' className="product-image" />
       <h2 className="product-name">{name}</h2>
-      <p className="product-description">{description}</p>
-      <p className="product-price">${price}</p>
-      <button className="add-to-cart-button">Add to Cart</button>
+      <p className="product-price">{price} руб.</p>
+      <button className="add-to-cart-button">добавить</button>
     </div>
   );
 };
