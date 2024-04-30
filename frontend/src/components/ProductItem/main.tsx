@@ -1,10 +1,9 @@
-import React from 'react';
 import Button from '../Button/main';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
-const ProductCard = ({ product }) => {
-  const { id, name, price, image } = product;
+const ProductCard = ({ product }: { product: { id: number, name: string, price: number, image: string, images: { image: string }[] } }) => {
+  const { id, name, price } = product;
   const firstImage = `http://127.0.0.1:8000/media/${product.images[0].image}`;
 
   console.log(firstImage);

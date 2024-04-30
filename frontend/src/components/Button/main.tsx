@@ -1,7 +1,11 @@
-import React from 'react';
 import './styles.css';
+import React, { ButtonHTMLAttributes } from 'react';
 
-const Button = ({ className, ...props }) => {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ className, ...props }) => {
   return <button {...props} className={`button ${className}`} />;
 };
 

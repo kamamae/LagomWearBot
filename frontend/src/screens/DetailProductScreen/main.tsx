@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import DetailProductCard from '../../components/DetailProductItem/main';
 import { useParams } from 'react-router-dom';
 
 
 const DetailProduct = () => {
-  const { id } = useParams(); // Get the product ID from the URL params
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {

@@ -4,16 +4,37 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
 import './styles.css';
 
-const DetailProductCard = ({ product }) => {
+interface Size {
+  name: string;
+  in_stock: boolean;
+}
+
+interface Image {
+  image: string;
+}
+
+interface Product {
+  name: string;
+  price: number;
+  description: string;
+  size: Size[];
+  images: Image[];
+}
+
+interface DetailProductCardProps {
+  product: Product;
+}
+
+const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
-  const [availableSizes, setAvailableSizes] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState<Size[]>([]);
 
   useEffect(() => {
     setAvailableSizes(product.size);
   }, [product.size]);
 
-  const handleSizeChange = (size) => {
+  const handleSizeChange = (size: string) => {
     const selectedSizeObj = availableSizes.find((s) => s.name === size);
 
     if (!selectedSizeObj || !selectedSizeObj.in_stock) {
@@ -24,29 +45,16 @@ const DetailProductCard = ({ product }) => {
     console.log('Выбран размер:', size);
   };
 
-  const handleNextSlide = () => {
-    if (currentSlide < product.images.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
-
-  const handlePrevSlide = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
 
   return (
     <div className="product-card">
       <Carousel
         swipeable={true}
-        draggable={true}
         showArrows={false}
         showStatus={false}
         showIndicators={true}
         infiniteLoop={false}
         emulateTouch={true}
-        itemsToShow={1}
         showThumbs={false}
         selectedItem={currentSlide}
         onChange={setCurrentSlide}
