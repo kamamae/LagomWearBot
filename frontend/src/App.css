@@ -1,3 +1,8 @@
+body{
+  background-color:var(--tg-theme-bg-color);
+  color:var(--tg-theme-text-color);
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

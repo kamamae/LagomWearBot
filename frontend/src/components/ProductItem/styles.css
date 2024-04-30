@@ -1,15 +1,15 @@
 .product-card {
-    width: 120px;
-    margin: 20px;
+  width: 120px;
+  margin: 0px;
+}
 
-  }
-
-  .product-image {
-    width: auto;
-    height: 160px;
-    border-radius:10px;
-    width:120px;
-  }
+.product-image {
+  width: 120px;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  object-fit: cover; /* Обрезать и сохранять пропорции изображения */
+  object-position: center;}
   
   .product-name {
     font-size: 12px;
@@ -29,17 +29,9 @@
     margin-bottom: 5px;
   }
   
-  .add-to-cart-button {
-    background-color: #CC87FE;
-    color: #fff;
-    border: none;
-    font-size: 12px;
-    font-weight:bold;
-    cursor: pointer;
-    height:32px;
-    width: auto;
-  }
-  
+  .button.open-detail-screen{
+  width:120px}
+
   .add-to-cart-button:hover {
     background-color: #0056b3;
   }
