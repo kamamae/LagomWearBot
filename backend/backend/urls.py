@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import ProductAPIView
+from main.views import ProductAPIView,DetailProductAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/products', ProductAPIView.as_view())
+    path('api/v1/products', ProductAPIView.as_view()),
+    path('api/v1/products/<int:pk>', DetailProductAPIView.as_view())
+
 ]
 
 if settings.DEBUG:
