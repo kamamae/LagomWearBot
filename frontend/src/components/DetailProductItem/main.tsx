@@ -47,7 +47,7 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
 
 
   return (
-    <div className="product-card">
+    <div className="detail-product-card">
       <Carousel
         swipeable={true}
         showArrows={false}
