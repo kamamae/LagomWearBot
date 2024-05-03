@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
+import arrowLeft from '../../assets/arrow-gray.svg';
 import './styles.css';
 
 interface Size {
@@ -29,6 +31,7 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [availableSizes, setAvailableSizes] = useState<Size[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAvailableSizes(product.size);
@@ -45,26 +48,41 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
     console.log('Выбран размер:', size);
   };
 
+  const handleBackClick = () => {
+    navigate('/');
+  };
 
   return (
     <div className="detail-product-card">
-      <Carousel
-        swipeable={true}
-        showArrows={false}
-        showStatus={false}
-        showIndicators={true}
-        infiniteLoop={false}
-        emulateTouch={true}
-        showThumbs={false}
-        selectedItem={currentSlide}
-        onChange={setCurrentSlide}
-      >
-        {product.images.map((image, index) => (
-          <div key={index}>
-            <img src={`http://127.0.0.1:8000/media/${image.image}`} alt={product.name} />
-          </div>
-        ))}
-      </Carousel>
+      <div className="carousel-wrapper">
+        <Carousel
+          swipeable={true}
+          showArrows={false}
+          showStatus={false}
+          showIndicators={true}
+          infiniteLoop={false}
+          emulateTouch={true}
+          showThumbs={false}
+          selectedItem={currentSlide}
+          onChange={setCurrentSlide}
+        >
+          {product.images.map((image, index) => (
+            <div key={index}>
+              <img
+                src={`http://127.0.0.1:8000/media/${image.image}`}
+                alt={product.name}
+                style={{ width: '100%' }}
+              />
+            </div>
+          ))}
+        </Carousel>
+        <img
+          src={arrowLeft}
+          className="back-arrow"
+          alt="Назад"
+          onClick={handleBackClick}
+        />
+      </div>
       <div className="product-info">
         <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
@@ -75,7 +93,9 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
           {availableSizes.map((size, index) => (
             <Button
               key={index}
-              className={`size-button ${selectedSize === size.name ? 'selected' : ''} ${!size.in_stock ? 'out-of-stock' : ''}`}
+              className={`size-button ${
+                selectedSize === size.name ? 'selected' : ''
+              } ${!size.in_stock ? 'out-of-stock' : ''}`}
               disabled={!size.in_stock}
               onClick={() => handleSizeChange(size.name)}
             >
