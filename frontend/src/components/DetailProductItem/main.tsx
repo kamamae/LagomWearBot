@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
-import arrowLeft from '../../assets/arrow-gray.svg';
+import arrowLeft from '../../assets/arrow-white.svg';
 import './styles.css';
 
 interface Size {
@@ -84,10 +84,8 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
         />
       </div>
       <div className="product-info">
-        <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
-          <h2 className="product-price">{product.price} руб.</h2>
-        </div>
+          <h2 className="product-price">{product.price}руб</h2>
         <div className="product-description">{product.description}</div>
         <div className="sizes">
           {availableSizes.map((size, index) => (

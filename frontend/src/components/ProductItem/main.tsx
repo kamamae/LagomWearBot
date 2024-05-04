@@ -12,7 +12,7 @@ const ProductCard = ({ product }: { product: { id: number, name: string, price: 
     <div className="product-card">
       <img src={firstImage} alt='foto' className="product-image" />
       <h2 className="product-name">{name}</h2>
-      <p className="product-price">{price} руб.</p>
+      <p className="product-price">{price} ₽</p>
       <Link to={`/products/${id}`} >
         <Button className="open-detail-screen">Добавить</Button>
       </Link>
