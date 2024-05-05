@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import axios from 'axios';
 import DetailProductCard from '../../components/DetailProductItem/main';
 import { useParams } from 'react-router-dom';
-
+import { WebAppProvider, BackButton } from '@vkruglikov/react-telegram-web-app';
 
 const DetailProduct = () => {
   const { id } = useParams();
@@ -26,9 +26,12 @@ const DetailProduct = () => {
   }
 
   return (
-    <div>
-      <DetailProductCard product={product} />
-    </div>
+    <WebAppProvider>
+      <BackButton />
+      <div>
+        <DetailProductCard product={product} />
+      </div>
+    </WebAppProvider>
   );
 };
 

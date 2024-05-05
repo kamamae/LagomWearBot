@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
-import arrowLeft from '../../assets/arrow-white.svg';
+// import arrowLeft from '../../assets/arrow-white.svg';
+import getCurrentTheme from '../../hooks/theme';
 import './styles.css';
 
 interface Size {
@@ -32,7 +33,15 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [availableSizes, setAvailableSizes] = useState<Size[]>([]);
   const navigate = useNavigate();
+  const currentTheme = getCurrentTheme();
 
+  if (currentTheme === 'dark') {
+    document.documentElement.style.setProperty('--tg-theme-bg-color', 'var(--theme-dark-bg-color)');
+    document.documentElement.style.setProperty('--tg-theme-text-color', 'var(--theme-dark-text-color)');
+  } else {
+    document.documentElement.style.setProperty('--tg-theme-bg-color', 'var(--theme-light-bg-color)');
+    document.documentElement.style.setProperty('--tg-theme-text-color', 'var(--theme-light-text-color)');
+  }
   useEffect(() => {
     setAvailableSizes(product.size);
   }, [product.size]);
@@ -47,10 +56,10 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
     setSelectedSize(size);
     console.log('Выбран размер:', size);
   };
-
-  const handleBackClick = () => {
-    navigate('/');
-  };
+//
+//   const handleBackClick = () => {
+//     navigate('/');
+//   };
 
   return (
     <div className="detail-product-card">
@@ -76,12 +85,6 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
             </div>
           ))}
         </Carousel>
-        <img
-          src={arrowLeft}
-          className="back-arrow"
-          alt="Назад"
-          onClick={handleBackClick}
-        />
       </div>
       <div className="product-info">
           <h2 className="product-name">{product.name}</h2>
