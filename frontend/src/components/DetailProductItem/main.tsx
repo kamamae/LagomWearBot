@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
 // import arrowLeft from '../../assets/arrow-white.svg';
-import getCurrentTheme from '../../hooks/theme';
 import './styles.css';
 
 interface Size {
@@ -32,16 +31,8 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [availableSizes, setAvailableSizes] = useState<Size[]>([]);
-  const navigate = useNavigate();
-  const currentTheme = getCurrentTheme();
+//   const navigate = useNavigate();
 
-  if (currentTheme === 'dark') {
-    document.documentElement.style.setProperty('--tg-theme-bg-color', 'var(--theme-dark-bg-color)');
-    document.documentElement.style.setProperty('--tg-theme-text-color', 'var(--theme-dark-text-color)');
-  } else {
-    document.documentElement.style.setProperty('--tg-theme-bg-color', 'var(--theme-light-bg-color)');
-    document.documentElement.style.setProperty('--tg-theme-text-color', 'var(--theme-light-text-color)');
-  }
   useEffect(() => {
     setAvailableSizes(product.size);
   }, [product.size]);

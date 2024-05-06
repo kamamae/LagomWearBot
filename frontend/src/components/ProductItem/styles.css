@@ -1,10 +1,11 @@
 .product-card {
   width: 160px;
-  background-color: #282828;
-  color: #fff;
+  background-color: var(--card-bg-color);
+  color: var(--card-text-color);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 .product-image {
   width: 150px;
@@ -13,7 +14,7 @@
   overflow: hidden;
   object-fit: cover;
   object-position: center;
-  margin:5px 0 5px 0;
+  margin:5px 2px 5px 2px;
 }
 
 .product-name {
@@ -40,6 +41,6 @@
 }
 
 .product-card .button{
-  width:100%;
+  width:98%;
   margin-bottom:2px;
 }
