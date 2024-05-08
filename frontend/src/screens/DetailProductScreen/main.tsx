@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState} from 'react';
 import axios from 'axios';
 import DetailProductCard from '../../components/DetailProductItem/main';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,10 @@ import { WebAppProvider, BackButton } from '@vkruglikov/react-telegram-web-app';
 const DetailProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+
+  const goBack = () => {
+    window.history.back();
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,7 +31,7 @@ const DetailProduct = () => {
 
   return (
     <WebAppProvider>
-      <BackButton />
+      <BackButton onClick={goBack}/>
       <div>
         <DetailProductCard product={product} />
       </div>
