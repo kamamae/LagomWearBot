@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Size, Image, ProductImage,ProductSize
+from .models import Product, Size, Profile, ProductImage,ProductSize,CartProduct
 
 
 class ProductSizeSerializer(serializers.ModelSerializer):
@@ -36,3 +36,14 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_size(self, obj):
         return [{'name': ps.size.name, 'in_stock': ps.in_stock} for ps in obj.productsize_set.all()]
+
+class CartProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartProduct
+        fields = '__all__'
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+

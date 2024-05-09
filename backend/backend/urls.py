@@ -16,16 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import ProductAPIView,DetailProductAPIView
+from main.views import ProductAPIView,DetailProductAPIView, CartAPIView, AddToCart, UserAPIView, User
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/products', ProductAPIView.as_view()),
-    path('api/v1/products/<int:pk>', DetailProductAPIView.as_view())
-
-]
+    path('api/v1/products/<int:pk>', DetailProductAPIView.as_view()),
+    path('api/v1/cart/<int:id>', CartAPIView().as_view()),
+    path('api/v1/cart/add', AddToCart().as_view()),
+    path('api/v1/profiles', UserAPIView().as_view()),
+    path('api/v1/profile/<int:pk>', User.as_view()),]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

@@ -1,18 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from rest_framework.exceptions import ValidationError
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    telegram_id = models.IntegerField(default=0)
+    telegram_id = models.IntegerField()
+    telegram_name = models.CharField(max_length=255, default='')
     chat_id = models.IntegerField()
     payment_token = models.CharField(max_length=255, default='')
+
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+
+    def __str__(self):
+        return self.telegram_name
 
 
 class Size(models.Model):
@@ -50,7 +53,6 @@ class Product(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField()
     price = models.IntegerField()
-
 
     class Meta:
         verbose_name = 'Товар'
@@ -90,7 +92,7 @@ class CartProduct(models.Model):
         ('failed', 'Failed')
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_size = models.ForeignKey(ProductSize, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -101,10 +103,10 @@ class CartProduct(models.Model):
         verbose_name_plural = 'Товары в корзине'
 
     def __str__(self):
-        return f"{self.user.username} - {self.product.name} ({self.product_size.size.name}) ({self.quantity})"
+        return f"{self.user.user.username} - {self.product.name} ({self.product_size.size.name}) ({self.quantity})"
 
     def update_quantity(self):
-        stock = ProductSize.objects.get(product_size=self.product_size)
+        stock = ProductSize.objects.get(id=self.product_size_id)
         stock.quantity -= self.quantity
         stock.save()
 
@@ -119,8 +121,7 @@ class CartProduct(models.Model):
 
 @receiver(post_save, sender=CartProduct)
 def decrement_product_quantity(sender, instance, **kwargs):
-    if instance.payment_status == 'successful':
-        stock = instance.product_size
+    if instance.payment_status == 'successful' and instance.product_size.quantity >= instance.quantity:
+        stock = ProductSize.objects.get(id=instance.product_size_id)
         stock.quantity -= instance.quantity
         stock.save()
-

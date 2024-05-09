@@ -7,7 +7,6 @@ import { WebAppProvider, BackButton } from '@vkruglikov/react-telegram-web-app';
 const DetailProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-
   const goBack = () => {
     window.history.back();
   };
@@ -22,11 +21,18 @@ const DetailProduct = () => {
       }
     };
 
+    const tg = window.Telegram.WebApp;
+    if (tg) {
+      tg.MainButton.setParams({
+        text: 'Посмотреть корзину'
+      });
+    }
+
     fetchProduct();
   }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div>Загрузка...</div>;
   }
 
   return (

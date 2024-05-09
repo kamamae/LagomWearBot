@@ -10,15 +10,18 @@ const tg = window.Telegram.WebApp;
 
 export function useTelegram() {
   const showMainButton = () => {
-    if (!tg.MainButton.isVisible) {
+    if (tg && tg.MainButton && !tg.MainButton.isVisible) {
       tg.MainButton.show();
     }
   };
 
+  const initDataUnsafe = tg?.initDataUnsafe || {};
+  const { user, chat } = initDataUnsafe;
+
   return {
     tg,
     showMainButton,
-    user:tg.initDataUnsafe?.user,
-    chat:tg.initDataUnsafe?.chat,
+    user,
+    chat,
   };
 }
