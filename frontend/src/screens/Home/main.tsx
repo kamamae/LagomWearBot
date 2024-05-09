@@ -15,7 +15,7 @@ export const Home = () => {
     });
     }, [tg.user, tg.MainButton]);
 
-    console.log(userId,tg)
+    console.log(tg.user,tg)
 
 
   return (
