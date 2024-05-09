@@ -9,14 +9,13 @@ export const Home = () => {
   console.log('User Info:', user,chat,tg)
 
     useEffect(() => {
-    const userId = user;
 
     tg.MainButton.setParams({
     text: 'Посмотреть корзину',
     });
     }, [tg.user, tg.MainButton]);
 
-    console.log(tg.user,tg)
+    console.log(userId,tg)
 
 
   return (
