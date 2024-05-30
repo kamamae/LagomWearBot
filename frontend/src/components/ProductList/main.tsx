@@ -11,15 +11,18 @@ interface Product {
   images: { image: string }[];
 }
 
-const ProductList = () => {
+interface ProductListProps {
+  url: string;
+}
+
+const ProductList = ({ url }: ProductListProps) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/products');
+        const response = await axios.get(url);
         setProducts(response.data);
-
         console.log(response.data);
       } catch (error) {
         console.error('Ошибка при получении данных:', error);

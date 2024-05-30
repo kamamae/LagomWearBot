@@ -7,7 +7,7 @@ class ProductSizeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductSize
-        fields = ['size', 'size_name', 'in_stock']
+        fields = ['size_name']
 
     def get_size_name(self, obj):
         return obj.size.name
@@ -38,6 +38,8 @@ class ProductSerializer(serializers.ModelSerializer):
         return [{'name': ps.size.name, 'in_stock': ps.in_stock} for ps in obj.productsize_set.all()]
 
 class CartProductSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    product_size = ProductSizeSerializer()
     class Meta:
         model = CartProduct
         fields = '__all__'

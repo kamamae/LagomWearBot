@@ -103,7 +103,7 @@ class CartProduct(models.Model):
         verbose_name_plural = 'Товары в корзине'
 
     def __str__(self):
-        return f"{self.user.user.username} - {self.product.name} ({self.product_size.size.name}) ({self.quantity})"
+        return f"{self.user.telegram_name} - {self.product.name} ({self.product_size.size.name}) ({self.quantity})"
 
     def update_quantity(self):
         stock = ProductSize.objects.get(id=self.product_size_id)
@@ -125,3 +125,4 @@ def decrement_product_quantity(sender, instance, **kwargs):
         stock = ProductSize.objects.get(id=instance.product_size_id)
         stock.quantity -= instance.quantity
         stock.save()
+

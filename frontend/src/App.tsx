@@ -3,6 +3,7 @@ import './App.css';
 import { Home } from './screens/Home/main';
 import DetailProduct from './screens/DetailProductScreen/main';
 import getCurrentTheme from './hooks/theme';
+import Cart from './screens/Cart/main';
 
   const currentTheme = getCurrentTheme();
 
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<DetailProduct />} />
+          <Route path="/cart/:userId" element={<Cart />} />
         </Routes>
       </Router>
     </>
