@@ -5,19 +5,26 @@ import {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
-  const {user, chat, tg} = useTelegram();
+  const { user, tg } = useTelegram();
   const userId = user.id; 
-  console.log('User Info:', user,chat,tg)
   const navigate = useNavigate();
-    useEffect(() => {
 
-    tg.MainButton.setParams({
-    text: 'Посмотреть корзину',
-    onClick: () => navigate(`/cart/${userId}`),
-      });
-    }, [tg.user, tg.MainButton, navigate, userId]);
-    console.log(tg.user,tg)
+  useEffect(() => {
+    tg.MainButton.setText('Посмотреть корзину');
+    tg.MainButton.show();
 
+    const onClickHandler = () => {
+      navigate(`/cart/${userId}`);
+    };
+
+    tg.MainButton.onClick(onClickHandler);
+
+    // Cleanup function to remove the handler when the component is unmounted or dependencies change
+    return () => {
+      tg.MainButton.offClick(onClickHandler);
+      tg.MainButton.hide();
+    };
+  }, [tg, navigate, userId]);
 
   return (
   <WebAppProvider>
