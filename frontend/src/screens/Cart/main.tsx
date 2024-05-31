@@ -1,6 +1,6 @@
 import { useTelegram } from '../../hooks/useTelegram';
 import ProductCartList from '../../components/ProductCartList/main';
-import { WebAppProvider, MainButton } from '@vkruglikov/react-telegram-web-app';
+import { WebAppProvider, MainButton,BackButton } from '@vkruglikov/react-telegram-web-app';
 import {useEffect} from 'react';
 
 
@@ -8,6 +8,9 @@ import {useEffect} from 'react';
 export const Cart = () => {
   const {user, chat, tg} = useTelegram();
   const userId = user.id; 
+  const goBack = () => {
+    window.history.back();
+  };
 
     useEffect(() => {
 
@@ -20,7 +23,7 @@ export const Cart = () => {
       useEffect(() => {
   
       tg.MainButton.setParams({
-      text: 'Посмотреть корзину',
+      text: 'Оформить заказ',
         });
       }, [tg.user, tg.MainButton, userId]);
       console.log(tg.user,tg)
@@ -31,6 +34,8 @@ export const Cart = () => {
 
     return (
       <WebAppProvider>
+      <BackButton onClick={goBack}/>
+
       <div>
         <ProductCartList url={url} />
       </div>
