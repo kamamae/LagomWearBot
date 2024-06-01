@@ -1,36 +1,36 @@
 import './styles.css';
 import { useState, useEffect } from 'react';
 import getCurrentTheme from '../../hooks/theme';
-import {useTelegram} from '../../hooks/useTelegram';
-
+import { useTelegram } from '../../hooks/useTelegram';
 
 const ProductCart = ({ product }: { product: any }) => {
   const firstImage = `http://127.0.0.1:8000/media/${product.product.images[0].image}`;
   const [quantity, setQuantity] = useState(product.quantity);
-  const {user,tg} = useTelegram();
-  const userId = user.id; 
-  console.log('USER',userId)
+  const { user, tg } = useTelegram();
+  const userId = user.id;
+  console.log('USER', userId);
+
   useEffect(() => {
     tg.ready();
-  },[])
+  }, [tg]);
 
   const handleQuantityIncrement = async () => {
     try {
       const newQuantity = quantity + 1;
       setQuantity(newQuantity);
-  
       await updateCartQuantity(product.id, newQuantity);
     } catch (error) {
       console.error('Ошибка при обновлении количества товара в корзине:', error);
     }
   };
+
   const handleQuantityDecrement = async () => {
- try {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-      await updateCartQuantity(product.id, newQuantity);
-    }
+    try {
+      if (quantity > 1) {
+        const newQuantity = quantity - 1;
+        setQuantity(newQuantity);
+        await updateCartQuantity(product.id, newQuantity);
+      }
     } catch (error) {
       console.error('Ошибка при обновлении количества товара в корзине:', error);
     }
@@ -43,7 +43,7 @@ const ProductCart = ({ product }: { product: any }) => {
       console.error('Ошибка при удалении товара в корзине:', error);
     }
   };
-  
+
   const updateCartQuantity = async (productId: string, newQuantity: number) => {
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
@@ -53,7 +53,7 @@ const ProductCart = ({ product }: { product: any }) => {
         },
         body: JSON.stringify({ quantity: newQuantity }),
       });
-  
+
       if (response.ok) {
         const updatedCartItem = await response.json();
         setQuantity(updatedCartItem.quantity);
@@ -65,6 +65,7 @@ const ProductCart = ({ product }: { product: any }) => {
       console.error('Ошибка при отправке запроса:', error);
     }
   };
+
   const deleteCartProduct = async (productId: string, newQuantity: number) => {
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
@@ -84,7 +85,6 @@ const ProductCart = ({ product }: { product: any }) => {
       console.error('Ошибка при отправке запроса:', error);
     }
   };
-  
 
   const currentTheme = getCurrentTheme();
 
