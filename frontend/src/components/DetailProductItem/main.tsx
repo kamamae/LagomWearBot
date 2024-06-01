@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
-// import arrowLeft from '../../assets/arrow-white.svg';
 import './styles.css';
 
 interface Size {
+  id: number;
   name: string;
   in_stock: boolean;
 }
@@ -25,32 +24,27 @@ interface Product {
 
 interface DetailProductCardProps {
   product: Product;
+  onSizeChange: (size: number) => void;
 }
 
-const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
+const DetailProductCard: React.FC<DetailProductCardProps> = ({ product, onSizeChange }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedSize, setSelectedSize] = useState<Size | null>(null);
   const [availableSizes, setAvailableSizes] = useState<Size[]>([]);
-//   const navigate = useNavigate();
 
   useEffect(() => {
     setAvailableSizes(product.size);
   }, [product.size]);
 
-  const handleSizeChange = (size: string) => {
-    const selectedSizeObj = availableSizes.find((s) => s.name === size);
-
-    if (!selectedSizeObj || !selectedSizeObj.in_stock) {
+  const handleSizeChange = (size: Size) => {
+    if (!size.in_stock) {
       return;
     }
 
     setSelectedSize(size);
-    console.log('Выбран размер:', size);
+    console.log('Выбран размер:', size.name, 'с ID:', size.id);
+    onSizeChange(size.id);
   };
-//
-//   const handleBackClick = () => {
-//     navigate('/');
-//   };
 
   return (
     <div className="detail-product-card">
@@ -78,24 +72,23 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product }) => {
         </Carousel>
       </div>
       <div className="product-info">
-          <h2 className="product-name">{product.name}</h2>
-          <h2 className="product-price">{product.price}руб</h2>
+        <h2 className="product-name">{product.name}</h2>
+        <h2 className="product-price">{product.price}руб</h2>
         <div className="product-description">{product.description}</div>
         <div className="sizes">
           {availableSizes.map((size, index) => (
             <Button
               key={index}
               className={`size-button ${
-                selectedSize === size.name ? 'selected' : ''
+                selectedSize?.id === size.id ? 'selected' : ''
               } ${!size.in_stock ? 'out-of-stock' : ''}`}
               disabled={!size.in_stock}
-              onClick={() => handleSizeChange(size.name)}
+              onClick={() => handleSizeChange(size)}
             >
               {size.name}
             </Button>
           ))}
         </div>
-        <Button className="buy-button">В корзину</Button>
       </div>
     </div>
   );

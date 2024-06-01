@@ -19,7 +19,6 @@ export const Home = () => {
 
     tg.MainButton.onClick(onClickHandler);
 
-    // Cleanup function to remove the handler when the component is unmounted or dependencies change
     return () => {
       tg.MainButton.offClick(onClickHandler);
       tg.MainButton.hide();
