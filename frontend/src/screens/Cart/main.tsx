@@ -35,7 +35,6 @@ export const Cart = () => {
     return (
       <WebAppProvider>
       <BackButton onClick={goBack}/>
-
       <div>
         <ProductCartList url={url} />
       </div>
