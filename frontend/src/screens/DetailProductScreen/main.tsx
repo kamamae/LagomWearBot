@@ -17,7 +17,7 @@ const DetailProduct = () => {
   const handleSizeChange = (sizeId: any) => {
     setSelectedSizeId(sizeId);
     console.log('Выбран размер с ID:', sizeId);
-    console.log(profile)
+    console.log('PROFILE',profile)
   };
 
   const goBack = () => {
@@ -98,8 +98,8 @@ const DetailProduct = () => {
   function addToCart(product: any, sizeId: number | null) {
     const data = {
       quantity: 1,
-      payment_status: 'Pending',
-      user: userId,
+      payment_status: 'pending',
+      user: profile.id,
       product: product.id,
       product_size: sizeId
     };
