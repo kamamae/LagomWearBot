@@ -35,6 +35,14 @@ const ProductCart = ({ product }: { product: any }) => {
       console.error('Ошибка при обновлении количества товара в корзине:', error);
     }
   };
+
+  const handleDeleteProduct = async () => {
+    try {
+      await deleteCartProduct(product.id, 0);
+    } catch (error) {
+      console.error('Ошибка при удалении товара в корзине:', error);
+    }
+  };
   
   const updateCartQuantity = async (productId: string, newQuantity: number) => {
     try {
@@ -52,6 +60,25 @@ const ProductCart = ({ product }: { product: any }) => {
       } else {
         const errorData = await response.json();
         console.error('Ошибка при обновлении количества товара в корзине:', errorData);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке запроса:', error);
+    }
+  };
+  const deleteCartProduct = async (productId: string, newQuantity: number) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: newQuantity }),
+      });
+
+      if (response.ok) {
+      } else {
+        const errorData = await response.json();
+        console.error('Ошибка при удалении товара в корзине:', errorData);
       }
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
@@ -89,7 +116,7 @@ const ProductCart = ({ product }: { product: any }) => {
       </div>
       <div className="product-cart-price-actions">
         <p className="product-cart-price">{product.product.price} ₽</p>
-        <button className="trash-btn">
+        <button className="trash-btn" onClick={handleDeleteProduct}>
           <svg
             className="trash"
             width="24"
