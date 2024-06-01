@@ -96,13 +96,17 @@ const DetailProduct = () => {
   }, [id, tg, user.id, product, navigate, fetchProduct, selectedSizeId]);
 
   function addToCart(product: any, sizeId: number | null) {
-    return axios.post(`http://127.0.0.1:8000/api/v1/cart/${user.id}/add/`, {
+    const data = {
       quantity: 1,
       payment_status: 'Pending',
       user: userId,
       product: product.id,
-      product_size: sizeId, 
-    }, {
+      product_size: sizeId
+    };
+  
+    console.table(data);
+  
+    return axios.post(`http://127.0.0.1:8000/api/v1/cart/${user.id}/add/`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
