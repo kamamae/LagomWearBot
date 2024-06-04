@@ -1,11 +1,11 @@
 from rest_framework import generics
-from .models import Product, CartProduct, Profile
-from .serializers import ProductSerializer, CartProductSerializer,UserSerializer
+from .models import Product, CartProduct, Profile, Size
+from .serializers import (ProductSerializer, CartProductSerializer,UserSerializer,AddCartProductSerializer,
+                          SizeSerializer,ProfileSerializer,EditCartSerializer)
 
 class ProductAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
 
 class DetailProductAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
@@ -13,7 +13,7 @@ class DetailProductAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class AddToCart(generics.CreateAPIView):
     queryset = CartProduct.objects.all()
-    serializer_class = CartProductSerializer
+    serializer_class = AddCartProductSerializer
 
 class CartAPIView(generics.ListAPIView):
     queryset = CartProduct.objects.all()
@@ -48,3 +48,20 @@ class User(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
 
+class SizeAPIView(generics.ListAPIView):
+    queryset = Size.objects.all()
+    serializer_class = SizeSerializer
+
+
+class ProfileRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'telegram_id'
+
+class EditQuantityAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CartProduct.objects.all()
+    serializer_class = EditCartSerializer
+
+class CreateProfileAPIView(generics.CreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UserSerializer

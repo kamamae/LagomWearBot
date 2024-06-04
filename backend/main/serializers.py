@@ -23,7 +23,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
-        fields = ['name']
+        fields = ['id','name']
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -35,7 +35,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_size(self, obj):
-        return [{'name': ps.size.name, 'in_stock': ps.in_stock} for ps in obj.productsize_set.all()]
+        return [{'id': ps.id, 'name': ps.size.name, 'in_stock': ps.in_stock} for ps in obj.productsize_set.all()]
+
 
 class CartProductSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
@@ -44,8 +45,24 @@ class CartProductSerializer(serializers.ModelSerializer):
         model = CartProduct
         fields = '__all__'
 
+class AddCartProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartProduct
+        fields = '__all__'
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['id', 'telegram_id', 'telegram_name', 'chat_id', 'payment_token']
+
+class EditCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartProduct
+        fields = ['quantity']
 

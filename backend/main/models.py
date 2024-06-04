@@ -7,6 +7,11 @@ from rest_framework.exceptions import ValidationError
 class Profile(models.Model):
     telegram_id = models.IntegerField()
     telegram_name = models.CharField(max_length=255, default='')
+    name = models.CharField(null=True, blank=True)
+    phone = models.CharField(null=True, blank=True)
+    adress = models.CharField(null=True, blank=True)
+    city = models.CharField(null=True, blank=True)
+    post_code = models.IntegerField(null=True, blank=True)
     chat_id = models.IntegerField()
     payment_token = models.CharField(max_length=255, default='')
 
