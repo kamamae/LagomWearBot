@@ -1,46 +1,63 @@
 import { useTelegram } from '../../hooks/useTelegram';
 import ProductCartList from '../../components/ProductCartList/main';
-import { WebAppProvider, MainButton, BackButton } from '@vkruglikov/react-telegram-web-app';
+import { WebAppProvider, MainButton,BackButton } from '@vkruglikov/react-telegram-web-app';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 export const Cart = () => {
-  const { user, tg } = useTelegram();
-  const userId = user.id;
+  const {user, tg} = useTelegram();
+  const userId = user.id; 
   const navigate = useNavigate();
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [price, setPrice] = useState<any[]>([]);
 
-  const handleTotalPriceUpdate = (price: number) => {
-    console.log('price_cart',totalPrice, price)
-    setTotalPrice(price);
-  };
 
   const goBack = () => {
     window.history.back();
   };
-
   const onClickHandler = () => {
     navigate(`/form/${userId}/`);
   };
+  tg.MainButton.onClick(onClickHandler);
 
-  useEffect(() => {
-    tg.MainButton.setParams({
+      useEffect(() => {
+  
+      tg.MainButton.setParams({
       text: 'Оформить заказ',
-      onClick: onClickHandler,
-    });
-  }, [tg.user, tg.MainButton, userId, onClickHandler]);
+        });
+      }, [tg.user, tg.MainButton, userId]);
+      console.log(tg.user,tg)
 
-  const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
+    console.log(tg.user,tg)
+    const fetchPrice = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/price/`);
+        console.log('price',price,setPrice)
+        setPrice(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
 
-  return (
-    <WebAppProvider>
-      <BackButton onClick={goBack} />
+    fetchPrice();
+    const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
+    // const url = `http://127.0.0.1:8000/api/v1/cart/123123/`;
+
+    return (
+      <WebAppProvider>
+      <BackButton onClick={goBack}/>
       <div>
-        <ProductCartList url={url} onTotalPriceUpdate={handleTotalPriceUpdate} />
+        <ProductCartList url={url} />
       </div>
-      <MainButton />
+      <MainButton/>
     </WebAppProvider>
   );
 };
 
-export default Cart;
+export default Cart
+
+
+
+

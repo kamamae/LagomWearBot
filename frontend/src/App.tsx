@@ -3,7 +3,7 @@ import './App.css';
 import { Home } from './screens/Home/main';
 import DetailProduct from './screens/DetailProductScreen/main';
 import getCurrentTheme from './hooks/theme';
-import Cart from './screens/Cart/main';
+import Cart from './screens/cart/main';
 
   const currentTheme = getCurrentTheme();
 
