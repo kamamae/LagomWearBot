@@ -4,6 +4,9 @@ import { Home } from './screens/Home/main';
 import DetailProduct from './screens/DetailProductScreen/main';
 import getCurrentTheme from './hooks/theme';
 import Cart from './screens/cart/main';
+import MainFormScreen from './screens/main-form/main';
+import Form from './components/form-info-screen/main'
+import CreditCardForm from './components/credit-card-form/main';
 
   const currentTheme = getCurrentTheme();
 
@@ -23,6 +26,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products/:id/" element={<DetailProduct />} />
           <Route path="/cart/:userId/" element={<Cart />} />
+          <Route path="/cart/form/:userId/" element={< MainFormScreen/>} />
+          <Route path="/form/:userId/user/" element={< Form/>} />
+          <Route path="/form/:userId/card" element={< CreditCardForm/>} />
         </Routes>
       </Router>
     </>

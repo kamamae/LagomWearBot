@@ -1,0 +1,39 @@
+.body {
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+.data-field{
+    position: relative;
+    width: 390px;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.data{
+    margin: 0%;
+}
+
+.label{
+    color: gray;
+    font-size: 12px;
+    margin: 0%;
+}
+
+.form-info{
+    margin-left: 5%;
+}
+
+
+.address-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .address-container p.data {
+    margin-right: 10px;
+  }

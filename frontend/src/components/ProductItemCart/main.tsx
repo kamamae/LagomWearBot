@@ -39,6 +39,7 @@ const ProductCart = ({ product }: { product: any }) => {
   const handleDeleteProduct = async () => {
     try {
       await deleteCartProduct(product.id, 0);
+      setQuantity(0);
     } catch (error) {
       console.error('Ошибка при удалении товара в корзине:', error);
     }
