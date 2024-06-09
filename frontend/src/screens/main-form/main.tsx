@@ -178,7 +178,7 @@ const MainFormScreen: React.FC<MainFormScreenProps> = () => {
         ) }
       </div> 
     </div>
-    <MainButton />
+    <MainButton  color="#CC87FE"/>
     </WebAppProvider>
   );
 };

@@ -35,7 +35,7 @@ export const Cart = () => {
       <div>
         <ProductCartList url={url} />
       </div>
-      <MainButton/>
+      <MainButton  color="#CC87FE"/>
     </WebAppProvider>
   );
 };

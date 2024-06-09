@@ -58,7 +58,7 @@ export const Home = () => {
       <div>
         <ProductList url="http://127.0.0.1:8000/api/v1/products/" />
       </div>
-      <MainButton />
+      <MainButton  color="#CC87FE"/>
     </WebAppProvider>
   );
 };

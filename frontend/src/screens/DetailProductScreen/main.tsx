@@ -126,7 +126,7 @@ const DetailProduct = () => {
       onSizeChange={handleSizeChange}
   />
       </div>
-      <MainButton />
+      <MainButton  color="#CC87FE"/>
     </WebAppProvider>
   );
 };
