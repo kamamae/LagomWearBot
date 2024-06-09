@@ -15,7 +15,6 @@ export const Home = () => {
   useEffect(() => {
     tg.MainButton.setText('Посмотреть корзину');
     tg.MainButton.show();
-
     const onClickHandler = () => {
       navigate(`/cart/${userId}`);
     };
