@@ -5,30 +5,80 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export const Cart = () => {
-  const { user, tg } = useTelegram();
+  const { user,tg } = useTelegram();
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
-
   const goBack = () => {
     window.history.back();
   };
 
-  const sendEventToTelegram = () => {
+
+  // const sendTestPaymentToTelegram = () => {
+  //   try {
+  //     const testPaymentUrl = '401643678:TEST:8d293e33-bd47-4a51-9053-6227becc9110';
+  //     tg.openInvoice(tg.sendInvoice(testPaymentUrl));
+  //   } catch (error) {
+  //     console.error('Error sending test payment to Telegram:', error);
+  //   }
+  // };
+
+  const sendText = () => {
     try {
-      tg.WebApps.postEvent('user_input_received', { text: 'Hello, Telegram!' });
+      // Get the current user and chat information
+      const { query_id } = tg.initDataCredentials();
+  
+      // Send a text message to the user
+      console.log('LOL')
+      tg.answerWebAppQuery(query_id, JSON.stringify({
+        type: 'message',
+        text: 'Hello, this is a test message!'
+      }));
     } catch (error) {
-      console.error('Error sending event to Telegram:', error);
+      console.error('Error sending text message to Telegram:', error);
     }
   };
+
+
+
+
+//  tg.bot.on('web_app_data', (ctx:any) => {
+//     if (ctx.webAppData.data.type === 'web_app_open_invoice') {
+//       const slug = ctx.webAppData.data.slug;
+//       console.log('Received invoice slug:', slug);
+//       tg.openInvoice(`https://example.com/invoice/${slug}`);
+//     }
+//   });
+
+
+// Пример использования
+const webAppData = {
+  price: 10.99
+};
+
+const chatId = tg.chat.id;
+const botToken = '6833449320:AAEJN5lvkW6GVkuFY9q224j4QwFxyH_OjQg';
+
+async function sendWebAppDataToTelegram(webAppData:any, chatId:any, botToken:any) {
+  try {
+    const response = await axios.post(`https://api.telegram.org/bot${botToken}/buy`, {
+      chat_id: chatId,
+      web_app_data: JSON.stringify(webAppData)
+    });
+
+    console.log('Ответ от Telegram Bot API:', response.data);
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error);
+  }
+}
+
   
   const onClickHandler = () => {  
+    sendWebAppDataToTelegram(webAppData, chatId, botToken);
     if (price > 0) {
-      tg.sendData(JSON.stringify({ price }));
+     console.log(price)
     } else {
       console.error('Invalid price value:', price);
     }
-    sendEventToTelegram();
-
   };
 
   tg.MainButton.onClick(onClickHandler);
@@ -37,6 +87,7 @@ export const Cart = () => {
     tg.MainButton.setParams({
       text: `Оплатить ${price} руб.`,
     });
+    sendText();
   };
 
   useEffect(() => {
