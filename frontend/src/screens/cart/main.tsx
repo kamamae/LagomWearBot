@@ -13,18 +13,22 @@ export const Cart = () => {
     window.history.back();
   };
 
-  const onClickHandler = () => {
-    tg.WebApps.postEvent({
-      eventType: 'user_input_received',
-      eventData: {
-        text: 'Hello, Telegram!'
-      }
-    });
+  const sendEventToTelegram = () => {
+    try {
+      tg.WebApps.postEvent('user_input_received', { text: 'Hello, Telegram!' });
+    } catch (error) {
+      console.error('Error sending event to Telegram:', error);
+    }
+  };
+  
+  const onClickHandler = () => {  
     if (price > 0) {
       tg.sendData(JSON.stringify({ price }));
     } else {
       console.error('Invalid price value:', price);
     }
+    sendEventToTelegram();
+
   };
 
   tg.MainButton.onClick(onClickHandler);
