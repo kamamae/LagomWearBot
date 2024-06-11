@@ -49,33 +49,10 @@ export const Cart = () => {
 //     }
 //   });
 
-
-// Пример использования
-const webAppData = {
-  price: 10.99
-};
-
-const chatId = tg.chat.id;
-const botToken = '6833449320:AAEJN5lvkW6GVkuFY9q224j4QwFxyH_OjQg';
-
-async function sendWebAppDataToTelegram(webAppData:any, chatId:any, botToken:any) {
-  try {
-    const response = await axios.post(`https://api.telegram.org/bot${botToken}/buy`, {
-      chat_id: chatId,
-      web_app_data: JSON.stringify(webAppData)
-    });
-
-    console.log('Ответ от Telegram Bot API:', response.data);
-  } catch (error) {
-    console.error('Ошибка при отправке данных:', error);
-  }
-}
-
   
   const onClickHandler = () => {  
-    sendWebAppDataToTelegram(webAppData, chatId, botToken);
     if (price > 0) {
-     console.log(price)
+      tg.sendData(JSON.stringify({ price }));
     } else {
       console.error('Invalid price value:', price);
     }
