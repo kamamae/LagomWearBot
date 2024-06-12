@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import getCurrentTheme from '../../hooks/theme';
 import { useTelegram } from '../../hooks/useTelegram';
 
-const ProductCart = ({ product }: { product: any }) => {
+const ProductCart = ({ product, onCartItemsChange }: { product: any, onCartItemsChange: (updatedCartItems: any) => void }) => {
   const firstImage = `http://127.0.0.1:8000/media/${product.product.images[0].image}`;
   const [quantity, setQuantity] = useState(product.quantity);
   const { user, tg } = useTelegram();
@@ -19,6 +19,7 @@ const ProductCart = ({ product }: { product: any }) => {
       const newQuantity = quantity + 1;
       setQuantity(newQuantity);
       await updateCartQuantity(product.id, newQuantity);
+      onCartItemsChange({ ...product, quantity: newQuantity });
     } catch (error) {
       console.error('Ошибка при обновлении количества товара в корзине:', error);
     }
@@ -30,6 +31,7 @@ const ProductCart = ({ product }: { product: any }) => {
         const newQuantity = quantity - 1;
         setQuantity(newQuantity);
         await updateCartQuantity(product.id, newQuantity);
+        onCartItemsChange({ ...product, quantity: newQuantity });
       }
     } catch (error) {
       console.error('Ошибка при обновлении количества товара в корзине:', error);
@@ -40,6 +42,7 @@ const ProductCart = ({ product }: { product: any }) => {
     try {
       await deleteCartProduct(product.id, 0);
       setQuantity(0);
+      onCartItemsChange({ ...product, quantity: 0 });
     } catch (error) {
       console.error('Ошибка при удалении товара в корзине:', error);
     }

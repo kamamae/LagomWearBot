@@ -8,7 +8,7 @@ export const Cart = () => {
   const { user, tg } = useTelegram();
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<any[]>([]);
   const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
 
   const goBack = () => {
@@ -54,15 +54,15 @@ export const Cart = () => {
     fetchCartItems();
   }, [fetchCartItems]);
 
-  const handleCartItemsChange = (updatedCartItems: any) => {
+  const handleCartItemsChange = (updatedCartItem: any) => {
+    const updatedCartItems = cartItems.map(item => item.id === updatedCartItem.id ? updatedCartItem : item);
     setCartItems(updatedCartItems);
     calculateTotalPrice(updatedCartItems);
   };
 
   const calculateTotalPrice = (items: any) => {
-    const newTotalPrice = items.reduce((total: any, item: any) => total + item.price * item.quantity, 0);
+    const newTotalPrice = items.reduce((total: any, item: any) => total + item.product.price * item.quantity, 0);
     setPrice(newTotalPrice);
-    updateMainButtonText();
   };
 
   useEffect(() => {
