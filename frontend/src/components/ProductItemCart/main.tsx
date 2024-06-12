@@ -1,14 +1,29 @@
+import React, { useState, useEffect } from 'react';
 import './styles.css';
-import { useState, useEffect } from 'react';
 import getCurrentTheme from '../../hooks/theme';
 import { useTelegram } from '../../hooks/useTelegram';
+import axios from 'axios';
 
-const ProductCart = ({ product, onCartItemsChange }: { product: any, onCartItemsChange: (updatedCartItems: any) => void }) => {
+interface ProductCartProps {
+  product: {
+    id: string;
+    product: {
+      name: string;
+      price: number;
+      images: { image: string }[];
+    };
+    product_size: { size_name: string };
+    quantity: number;
+  };
+  onCartItemsChange: (updatedCartItems: any) => void;
+  onDeleteProduct: (productId: string) => void;
+}
+
+const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, onDeleteProduct }) => {
   const firstImage = `http://127.0.0.1:8000/media/${product.product.images[0].image}`;
   const [quantity, setQuantity] = useState(product.quantity);
   const { user, tg } = useTelegram();
   const userId = user.id;
-  console.log('USER', userId);
 
   useEffect(() => {
     tg.ready();
@@ -40,9 +55,10 @@ const ProductCart = ({ product, onCartItemsChange }: { product: any, onCartItems
 
   const handleDeleteProduct = async () => {
     try {
-      await deleteCartProduct(product.id, 0);
-      setQuantity(0);
-      onCartItemsChange({ ...product, quantity: 0 });
+      const success = await deleteCartProduct(product.id);
+      if (success) {
+        onDeleteProduct(product.id);
+      }
     } catch (error) {
       console.error('Ошибка при удалении товара в корзине:', error);
     }
@@ -50,43 +66,27 @@ const ProductCart = ({ product, onCartItemsChange }: { product: any, onCartItems
 
   const updateCartQuantity = async (productId: string, newQuantity: number) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
+      const response = await axios.put(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
+        quantity: newQuantity,
       });
 
-      if (response.ok) {
-        const updatedCartItem = await response.json();
-        setQuantity(updatedCartItem.quantity);
+      if (response.status === 200) {
+        setQuantity(newQuantity);
       } else {
-        const errorData = await response.json();
-        console.error('Ошибка при обновлении количества товара в корзине:', errorData);
+        console.error('Ошибка при обновлении количества товара в корзине:', response.data);
       }
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
     }
   };
 
-  const deleteCartProduct = async (productId: string, newQuantity: number) => {
+  const deleteCartProduct = async (productId: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
-      });
-
-      if (response.ok) {
-      } else {
-        const errorData = await response.json();
-        console.error('Ошибка при удалении товара в корзине:', errorData);
-      }
+      const response = await axios.delete(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`);
+      return response.status === 204;
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
+      return false;
     }
   };
 

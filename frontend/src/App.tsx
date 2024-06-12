@@ -4,7 +4,7 @@ import { Home } from './screens/Home/main';
 import DetailProduct from './screens/DetailProductScreen/main';
 import getCurrentTheme from './hooks/theme';
 import Cart from './screens/cart/main';
-
+import {WebAppProvider} from '@vkruglikov/react-telegram-web-app';
   const currentTheme = getCurrentTheme();
 
   if (currentTheme === 'dark') {
@@ -17,7 +17,7 @@ import Cart from './screens/cart/main';
 
 function App() {
   return (
-    <>
+    <WebAppProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -25,8 +25,7 @@ function App() {
           <Route path="/cart/:userId/" element={<Cart />} />
         </Routes>
       </Router>
-    </>
-  );
+    </WebAppProvider> );
 }
 
 export default App;
