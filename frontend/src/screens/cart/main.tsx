@@ -9,6 +9,7 @@ export const Cart = () => {
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
   const [cartItems, setCartItems] = useState([]);
+  const [isModified, setIsModified] = useState(false);
   const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
 
   const goBack = () => {
@@ -36,6 +37,7 @@ export const Cart = () => {
     try {
       const response = await axios.get(url);
       setCartItems(response.data);
+      setIsModified(false);
       console.log("response.data.items", response.data);
 
       const priceResponse = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/price/`);
@@ -55,11 +57,21 @@ export const Cart = () => {
     updateMainButtonText();
   }, [price]);
 
+  const handleCartItemsChange = () => {
+    setIsModified(true);
+  };
+
+  useEffect(() => {
+    if (isModified) {
+      fetchCartItems();
+    }
+  }, [isModified, fetchCartItems]);
+
   return (
     <WebAppProvider>
       <BackButton onClick={goBack} />
       <div>
-        <ProductCartList url={url} onCartItemsChange={fetchCartItems} />
+        <ProductCartList url={url} onCartItemsChange={handleCartItemsChange} />
       </div>
       <MainButton color="#CC87FE" />
     </WebAppProvider>
