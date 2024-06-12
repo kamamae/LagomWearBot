@@ -21,7 +21,7 @@ const ProductCartList = ({ url, onCartItemsChange }: { url: string, onCartItemsC
   }, [url]);
 
   return (
-    <div className="list">
+    <div className="cart-list">
       {products.map((item) => (
         <ProductCart key={item.id} product={item} onCartItemsChange={onCartItemsChange} />
       ))}

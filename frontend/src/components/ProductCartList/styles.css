@@ -2,6 +2,16 @@
   display: grid;
   grid-gap: 5px;
   width: auto;
-
 }
 
+.list-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 419px;
+}
+
+.list .product-item {
+  width: 100%;
+  margin-bottom: 10px; 
+}

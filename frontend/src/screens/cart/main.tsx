@@ -1,6 +1,6 @@
 import { useTelegram } from '../../hooks/useTelegram';
 import ProductCartList from '../../components/ProductCartList/main';
-import { WebAppProvider, MainButton, BackButton } from '@vkruglikov/react-telegram-web-app';
+import { MainButton, BackButton } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 
@@ -70,13 +70,13 @@ export const Cart = () => {
   }, [price, updateMainButtonText]);
 
   return (
-    <WebAppProvider>
+    <>
       <BackButton onClick={goBack} />
       <div>
         <ProductCartList url={url} onCartItemsChange={handleCartItemsChange} />
       </div>
       <MainButton color="#CC87FE" disabled={price === 0} />
-    </WebAppProvider>
+    </>
   );
 };
 
