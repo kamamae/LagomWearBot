@@ -1,11 +1,13 @@
 import ProductList from "../../components/ProductList/main";
-import { WebAppProvider, MainButton } from '@vkruglikov/react-telegram-web-app';
+import { MainButton, useWebApp } from '@vkruglikov/react-telegram-web-app';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const Home = () => {
+  const WebApp = useWebApp();
+  console.log('WevApp',WebApp);
   const { user, tg } = useTelegram();
   const userId = user.id;
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ export const Home = () => {
     const onClickHandler = () => {
       navigate(`/cart/${userId}`);
     };
-
+    
     tg.MainButton.onClick(onClickHandler);
 
     createOrCheckUser({
@@ -54,12 +56,12 @@ export const Home = () => {
   }
 
   return (
-    <WebAppProvider>
+    <>
       <div>
         <ProductList url="http://127.0.0.1:8000/api/v1/products/" />
       </div>
       <MainButton  color="#CC87FE"/>
-    </WebAppProvider>
+    </>
   );
 };
 
