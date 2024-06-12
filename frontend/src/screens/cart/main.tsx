@@ -19,6 +19,8 @@ useEffect(() => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/`);
       setCartItems(response.data.items);
+      console.log("response.data.items",response.data.items);
+
       console.log(cartItems);
     } catch (error) {
       console.error('Error fetching cart items:', error);
