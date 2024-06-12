@@ -24,18 +24,18 @@ export const Cart = () => {
     }
   };
 
-  // Оборачиваем установку обработчика в useEffect для предотвращения утечек памяти
   useEffect(() => {
     tg.MainButton.onClick(onClickHandler);
     return () => {
       tg.MainButton.offClick(onClickHandler);
     };
-  }, [price, cartItems, tg.MainButton]);
+  }, [onClickHandler, tg.MainButton]);
 
   const updateMainButtonText = useCallback(() => {
     tg.MainButton.setParams({
       text: `Оплатить ${price} руб.`,
     });
+    console.log(`Updated button text: Оплатить ${price} руб.`);
   }, [price, tg.MainButton]);
 
   const fetchCartItems = useCallback(async () => {
@@ -64,6 +64,10 @@ export const Cart = () => {
     setPrice(newTotalPrice);
     updateMainButtonText();
   };
+
+  useEffect(() => {
+    updateMainButtonText();
+  }, [price, updateMainButtonText]);
 
   return (
     <WebAppProvider>
