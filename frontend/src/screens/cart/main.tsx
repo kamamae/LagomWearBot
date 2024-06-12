@@ -9,7 +9,6 @@ export const Cart = () => {
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
   const [cartItems, setCartItems] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
 
   const goBack = () => {
@@ -25,47 +24,46 @@ export const Cart = () => {
     }
   };
 
-  tg.MainButton.onClick(onClickHandler);
+  // Оборачиваем установку обработчика в useEffect для предотвращения утечек памяти
+  useEffect(() => {
+    tg.MainButton.onClick(onClickHandler);
+    return () => {
+      tg.MainButton.offClick(onClickHandler);
+    };
+  }, [price, cartItems, tg.MainButton]);
 
-  const updateMainButtonText = () => {
+  const updateMainButtonText = useCallback(() => {
     tg.MainButton.setParams({
       text: `Оплатить ${price} руб.`,
     });
-  };
+  }, [price, tg.MainButton]);
 
   const fetchCartItems = useCallback(async () => {
     try {
       const response = await axios.get(url);
       setCartItems(response.data);
-      setIsModified(false);
-      console.log("response.data.items", response.data);
-
       const priceResponse = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/price/`);
-      console.log('PRICE', priceResponse.data.total_price);
       setPrice(priceResponse.data.total_price);
       updateMainButtonText();
     } catch (error) {
       console.error('Ошибка при получении данных:', error);
     }
-  }, [userId, updateMainButtonText]);
+  }, [url, userId, updateMainButtonText]);
 
   useEffect(() => {
     fetchCartItems();
   }, [fetchCartItems]);
 
-  useEffect(() => {
-    updateMainButtonText();
-  }, [price]);
-
-  const handleCartItemsChange = () => {
-    setIsModified(true);
+  const handleCartItemsChange = (updatedCartItems: any) => {
+    setCartItems(updatedCartItems);
+    calculateTotalPrice(updatedCartItems);
   };
 
-  useEffect(() => {
-    if (isModified) {
-      fetchCartItems();
-    }
-  }, [isModified, fetchCartItems]);
+  const calculateTotalPrice = (items: any) => {
+    const newTotalPrice = items.reduce((total: any, item: any) => total + item.price * item.quantity, 0);
+    setPrice(newTotalPrice);
+    updateMainButtonText();
+  };
 
   return (
     <WebAppProvider>
@@ -73,7 +71,7 @@ export const Cart = () => {
       <div>
         <ProductCartList url={url} onCartItemsChange={handleCartItemsChange} />
       </div>
-      <MainButton color="#CC87FE" />
+      <MainButton color="#CC87FE" disabled={price === 0} />
     </WebAppProvider>
   );
 };
