@@ -18,8 +18,8 @@ useEffect(() => {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/`);
-      setCartItems(response.data.items);
-      console.log("response.data.items",response.data.items);
+      setCartItems(response.data);
+      console.log("response.data.items",response.data);
 
       console.log(cartItems);
     } catch (error) {
