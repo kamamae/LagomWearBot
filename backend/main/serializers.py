@@ -66,3 +66,9 @@ class EditCartSerializer(serializers.ModelSerializer):
         model = CartProduct
         fields = ['quantity']
 
+class TotalPrice(serializers.ModelSerializer):
+    product = ProductSerializer()
+    class Meta:
+        model = CartProduct
+        fields = '__all__'
+

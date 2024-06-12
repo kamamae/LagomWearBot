@@ -28,10 +28,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'https://main--lagomwearbot.netlify.app',
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_METHODS = [
     'DELETE',

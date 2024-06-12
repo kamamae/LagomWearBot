@@ -1,8 +1,8 @@
 from rest_framework import generics
 from .models import Product, CartProduct, Profile, Size
 from .serializers import (ProductSerializer, CartProductSerializer,UserSerializer,AddCartProductSerializer,
-                          SizeSerializer,ProfileSerializer,EditCartSerializer)
-
+                          SizeSerializer,ProfileSerializer,EditCartSerializer, TotalPrice)
+from rest_framework.response import Response
 class ProductAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -65,3 +65,16 @@ class EditQuantityAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CreateProfileAPIView(generics.CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
+
+class PriceCartAPIView(generics.ListAPIView):
+    queryset = CartProduct.objects.all()
+    serializer_class = TotalPrice
+    def get_queryset(self):
+        telegram_id = self.kwargs['telegram_id']
+        return CartProduct.objects.filter(user__telegram_id=telegram_id)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        total_price = sum(item['product']['price'] * item['quantity'] for item in serializer.data)
+        return Response({'total_price': total_price, 'items': serializer.data})
