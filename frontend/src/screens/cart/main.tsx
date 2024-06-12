@@ -8,51 +8,29 @@ export const Cart = () => {
   const { user,tg } = useTelegram();
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
+  const [cartItems, setCartItems] = useState([]);
   const goBack = () => {
     window.history.back();
   };
 
 
-  // const sendTestPaymentToTelegram = () => {
-  //   try {
-  //     const testPaymentUrl = '401643678:TEST:8d293e33-bd47-4a51-9053-6227becc9110';
-  //     tg.openInvoice(tg.sendInvoice(testPaymentUrl));
-  //   } catch (error) {
-  //     console.error('Error sending test payment to Telegram:', error);
-  //   }
-  // };
-
-  const sendText = () => {
+useEffect(() => {
+  const fetchCartItems = async () => {
     try {
-      // Get the current user and chat information
-      const { query_id } = tg.initDataCredentials();
-  
-      // Send a text message to the user
-      console.log('LOL')
-      tg.answerWebAppQuery(query_id, JSON.stringify({
-        type: 'message',
-        text: 'Hello, this is a test message!'
-      }));
+      const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/`);
+      setCartItems(response.data.items);
+      console.log(cartItems);
     } catch (error) {
-      console.error('Error sending text message to Telegram:', error);
+      console.error('Error fetching cart items:', error);
     }
   };
-
-
-
-
-//  tg.bot.on('web_app_data', (ctx:any) => {
-//     if (ctx.webAppData.data.type === 'web_app_open_invoice') {
-//       const slug = ctx.webAppData.data.slug;
-//       console.log('Received invoice slug:', slug);
-//       tg.openInvoice(`https://example.com/invoice/${slug}`);
-//     }
-//   });
-
+  fetchCartItems();
+}, [userId]);
   
   const onClickHandler = () => {  
     if (price > 0) {
-      tg.sendData(JSON.stringify({ price }));
+      tg.sendData(JSON.stringify({ price,cartItems }));
+      console.log('cartItems',cartItems)
     } else {
       console.error('Invalid price value:', price);
     }
@@ -64,7 +42,6 @@ export const Cart = () => {
     tg.MainButton.setParams({
       text: `Оплатить ${price} руб.`,
     });
-    sendText();
   };
 
   useEffect(() => {
