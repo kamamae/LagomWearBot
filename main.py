@@ -131,8 +131,7 @@ async def on_click(callback_query: types.CallbackQuery):
         receipt_text = "Тестовая оплата прошла успешно\n"
 
         for item in web_app_data['cartItems']:
-            receipt_text += f"  id: {item['id']}\n"
-            receipt_text += f"  Товар: {item['product']['name']}\n"
+            receipt_text += f"  {item['product']['name']}\n"
             receipt_text += f"  Размер: {item['product_size']['size_name']}\n"
             receipt_text += f"  Количество: {item['quantity']}\n"
             receipt_text += f"  Цена: {item['product']['price']} ₽ за единицу\n"

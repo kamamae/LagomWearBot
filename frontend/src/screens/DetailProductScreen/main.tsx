@@ -5,8 +5,6 @@ import { useParams } from 'react-router-dom';
 import { WebAppProvider, BackButton, MainButton } from '@vkruglikov/react-telegram-web-app';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
-import { apiBaseUrl } from "../../constants/base-url";
-
 
 const DetailProduct = () => {
   const [selectedSizeId, setSelectedSizeId] = useState(null);
@@ -29,7 +27,7 @@ const DetailProduct = () => {
   const userId = user.id;
 
   const fetchProduct = useCallback(() => {
-    axios.get(`${apiBaseUrl}/api/v1/products/${id}`)
+    axios.get(`http://127.0.0.1:8000/api/v1/products/${id}`)
       .then((response) => {
         console.log("PRODUCT ID", id); 
         setProduct(response.data);
@@ -40,7 +38,7 @@ const DetailProduct = () => {
   }, [id]);
 
   const fetchUserProfile = useCallback((telegramId: number) => {
-    axios.get(`${apiBaseUrl}/api/v1/profiles/${telegramId}/`)
+    axios.get(`http://127.0.0.1:8000/api/v1/profiles/${telegramId}/`)
       .then((response) => {
         const userId = response.data.id; 
         setUserProfile(response.data);
@@ -108,7 +106,7 @@ const DetailProduct = () => {
   
     console.table(data);
   
-    return axios.post(`${apiBaseUrl}/api/v1/cart/${user.id}/add/`, data, {
+    return axios.post(`http://127.0.0.1:8000/api/v1/cart/${user.id}/add/`, data, {
       headers: {
         'Content-Type': 'application/json',
       }

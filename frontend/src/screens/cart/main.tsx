@@ -3,15 +3,13 @@ import ProductCartList from '../../components/ProductCartList/main';
 import { MainButton, BackButton } from '@vkruglikov/react-telegram-web-app';
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { apiBaseUrl } from "../../constants/base-url";
-
 
 export const Cart = () => {
   const { user, tg } = useTelegram();
   const userId = user.id;
   const [price, setPrice] = useState<number>(0);
   const [cartItems, setCartItems] = useState<any[]>([]);
-  const url = `${apiBaseUrl}/api/v1/cart/${userId}/`;
+  const url = `http://127.0.0.1:8000/api/v1/cart/${userId}/`;
 
   const goBack = () => {
     window.history.back();
@@ -44,7 +42,7 @@ export const Cart = () => {
     try {
       const response = await axios.get(url);
       setCartItems(response.data);
-      const priceResponse = await axios.get(`${apiBaseUrl}/api/v1/cart/${userId}/price/`);
+      const priceResponse = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}/price/`);
       setPrice(priceResponse.data.total_price);
       updateMainButtonText();
     } catch (error) {
