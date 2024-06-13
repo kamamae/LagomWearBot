@@ -4,6 +4,7 @@ import { useTelegram } from '../../hooks/useTelegram';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { apiBaseUrl } from "../../constants/base-url";
 
 export const Home = () => {
   const WebApp = useWebApp();
@@ -38,12 +39,12 @@ export const Home = () => {
 
   async function createOrCheckUser(data: any) {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/v1/profiles/${userId}`)
+      const response = await axios.get(`${apiBaseUrl}/api/v1/profiles/${userId}`)
       console.log(response)
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.status === 404) {
         console.log('User not found, creating new profile...');
-        await axios.post(`http://127.0.0.1:8000/api/v1/profile/${userId}/create`, data, {
+        await axios.post(`${apiBaseUrl}/api/v1/profile/${userId}/create`, data, {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -58,7 +59,7 @@ export const Home = () => {
   return (
     <>
       <div>
-        <ProductList url="http://127.0.0.1:8000/api/v1/products/" />
+      <ProductList url={`${apiBaseUrl}/api/v1/products/`} />
       </div>
       <MainButton  color="#CC87FE"/>
     </>

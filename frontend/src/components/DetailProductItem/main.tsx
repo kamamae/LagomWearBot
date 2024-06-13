@@ -3,6 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Button from '../Button/main';
 import './styles.css';
+import { apiBaseUrl } from '../../constants/base-url';
 
 interface Size {
   id: number;
@@ -63,7 +64,7 @@ const DetailProductCard: React.FC<DetailProductCardProps> = ({ product, onSizeCh
           {product.images.map((image, index) => (
             <div key={index}>
               <img
-                src={`http://127.0.0.1:8000/media/${image.image}`}
+                src={`${apiBaseUrl}/media/${image.image}`}
                 alt={product.name}
                 style={{ width: '100%' }}
               />
