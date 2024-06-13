@@ -4,9 +4,9 @@ import { useTelegram } from '../../hooks/useTelegram';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { apiBaseUrl } from "../../constants/base-url";
 
 export const Home = () => {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const WebApp = useWebApp();
   console.log('WevApp',WebApp);
   const { user, tg } = useTelegram();
