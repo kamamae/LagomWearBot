@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const Home = () => {
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const WebApp = useWebApp();
   console.log('WevApp',WebApp);
   const { user, tg } = useTelegram();
