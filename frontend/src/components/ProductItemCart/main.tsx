@@ -15,8 +15,8 @@ interface ProductCartProps {
     product_size: { size_name: string };
     quantity: number;
   };
-  onCartItemsChange: (updatedCartItems: any) => void;
-  onDeleteProduct: (productId: string) => void;
+  onCartItemsChange: (updatedCartItem: any) => void;
+  onDeleteProduct: (productId: string, productPrice: number, productQuantity: number) => void;
 }
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, onDeleteProduct }) => {
@@ -57,9 +57,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, o
     try {
       const success = await deleteCartProduct(product.id);
       if (success) {
-        setQuantity(0);
-        onCartItemsChange({ ...product, quantity: 0 });
-        onDeleteProduct(product.id);
+        onDeleteProduct(product.id, product.product.price, quantity); // Передать цену и количество продукта
       }
     } catch (error) {
       console.error('Ошибка при удалении товара в корзине:', error);

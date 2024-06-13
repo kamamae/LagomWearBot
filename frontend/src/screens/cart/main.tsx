@@ -60,6 +60,10 @@ export const Cart = () => {
     calculateTotalPrice(updatedCartItems);
   };
 
+  const handleTotalPriceChange = (priceChange: number) => {
+    setPrice(prevPrice => prevPrice + priceChange);
+  };
+
   const calculateTotalPrice = (items: any) => {
     const newTotalPrice = items.reduce((total: any, item: any) => total + item.product.price * item.quantity, 0);
     setPrice(newTotalPrice);
@@ -73,7 +77,7 @@ export const Cart = () => {
     <>
       <BackButton onClick={goBack} />
       <div>
-        <ProductCartList url={url} onCartItemsChange={handleCartItemsChange} />
+        <ProductCartList url={url} onCartItemsChange={handleCartItemsChange} onTotalPriceChange={handleTotalPriceChange} />
       </div>
       <MainButton color="#CC87FE" disabled={price === 0} />
     </>

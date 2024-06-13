@@ -17,9 +17,10 @@ interface Product {
 interface ProductCartListProps {
   url: string;
   onCartItemsChange: (updatedCartItems: Product[]) => void;
+  onTotalPriceChange: (newTotalPrice: number) => void;
 }
 
-const ProductCartList: React.FC<ProductCartListProps> = ({ url, onCartItemsChange }) => {
+const ProductCartList: React.FC<ProductCartListProps> = ({ url, onCartItemsChange, onTotalPriceChange }) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const ProductCartList: React.FC<ProductCartListProps> = ({ url, onCartItemsChang
       try {
         const response = await axios.get<Product[]>(url);
         setProducts(response.data);
+        calculateTotalPrice(response.data);
       } catch (error) {
         console.error('Ошибка при получении данных:', error);
       }
@@ -35,12 +37,16 @@ const ProductCartList: React.FC<ProductCartListProps> = ({ url, onCartItemsChang
     fetchProducts();
   }, [url]);
 
-  const handleDeleteProduct = (productId: string) => {
-    const updatedProducts = products.map((product) =>
-      product.id === productId ? { ...product, quantity: 0 } : product
-    ).filter((product) => product.id !== productId);
+  const handleDeleteProduct = (productId: string, productPrice: number, productQuantity: number) => {
+    const updatedProducts = products.filter((product) => product.id !== productId);
     setProducts(updatedProducts);
     onCartItemsChange(updatedProducts);
+    onTotalPriceChange(-(productPrice * productQuantity));
+  };
+
+  const calculateTotalPrice = (products: Product[]) => {
+    const total = products.reduce((sum, product) => sum + product.product.price * product.quantity, 0);
+    onTotalPriceChange(total);
   };
 
   return (
