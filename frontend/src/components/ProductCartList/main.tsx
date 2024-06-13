@@ -36,13 +36,15 @@ const ProductCartList: React.FC<ProductCartListProps> = ({ url, onCartItemsChang
   }, [url]);
 
   const handleDeleteProduct = (productId: string) => {
-    const updatedProducts = products.filter((product) => product.id !== productId);
+    const updatedProducts = products.map((product) =>
+      product.id === productId ? { ...product, quantity: 0 } : product
+    ).filter((product) => product.id !== productId);
     setProducts(updatedProducts);
     onCartItemsChange(updatedProducts);
   };
 
   return (
-    <div className="list">
+    <div className="cart-list">
       {products.map((item) => (
         <ProductCart
           key={item.id}

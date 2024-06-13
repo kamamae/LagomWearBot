@@ -57,6 +57,8 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, o
     try {
       const success = await deleteCartProduct(product.id);
       if (success) {
+        setQuantity(0);
+        onCartItemsChange({ ...product, quantity: 0 });
         onDeleteProduct(product.id);
       }
     } catch (error) {
