@@ -3,7 +3,6 @@ import './styles.css';
 import getCurrentTheme from '../../hooks/theme';
 import { useTelegram } from '../../hooks/useTelegram';
 import axios from 'axios';
-import { apiBaseUrl } from "../../constants/base-url";
 
 
 interface ProductCartProps {
@@ -22,7 +21,7 @@ interface ProductCartProps {
 }
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, onDeleteProduct }) => {
-  const firstImage = `${apiBaseUrl}/media/${product.product.images[0].image}`;
+  const firstImage = `http://127.0.0.1:8000/media/${product.product.images[0].image}`;
   const [quantity, setQuantity] = useState(product.quantity);
   const { user, tg } = useTelegram();
   const userId = user.id;
@@ -68,7 +67,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, o
 
   const updateCartQuantity = async (productId: string, newQuantity: number) => {
     try {
-      const response = await axios.put(`${apiBaseUrl}/api/v1/cart/${userId}/${productId}/`, {
+      const response = await axios.put(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`, {
         quantity: newQuantity,
       });
 
@@ -84,7 +83,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onCartItemsChange, o
 
   const deleteCartProduct = async (productId: string) => {
     try {
-      const response = await axios.delete(`${apiBaseUrl}/api/v1/cart/${userId}/${productId}/`);
+      const response = await axios.delete(`http://127.0.0.1:8000/api/v1/cart/${userId}/${productId}/`);
       return response.status === 204;
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
