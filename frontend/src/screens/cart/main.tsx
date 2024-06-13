@@ -17,7 +17,7 @@ export const Cart = () => {
 
   const onClickHandler = () => {
     if (price > 0) {
-      tg.sendData(JSON.stringify({ price, cartItems }));
+      window.Telegram.WebApp.sendData(JSON.stringify({ price, cartItems }));
       console.log('cartItems', cartItems);
     } else {
       console.error('Invalid price value:', price, cartItems);
